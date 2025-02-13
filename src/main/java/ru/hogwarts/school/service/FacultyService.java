@@ -15,7 +15,7 @@ public class FacultyService {
     private long lastId = 0;
 
     public Faculty addFaculty(Faculty faculty) {
-        faculty.setId(lastId++);
+        faculty.setId(++lastId);
         faculties.put(faculty.getId(), faculty);
         return faculty;
     }

@@ -14,7 +14,7 @@ public class StudentService {
     private long lastId = 0;
 
     public Student addStudent(Student student) {
-        student.setId(lastId++);
+        student.setId(++lastId);
         students.put(student.getId(), student);
         return student;
     }
