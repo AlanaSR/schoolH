@@ -15,8 +15,9 @@ public class FacultyService {
     private long lastId = 0;
 
     public Faculty addFaculty(Faculty faculty) {
-        faculty.setId(++lastId);
-        return faculties.put(faculty.getId(), faculty);
+        faculty.setId(lastId++);
+        faculties.put(faculty.getId(), faculty);
+        return faculty;
     }
 
     public Faculty findFaculty(long id) {
@@ -28,7 +29,8 @@ public class FacultyService {
     }
 
     public Faculty editeFaculty(Faculty faculty) {
-        return faculties.put(faculty.getId(), faculty);
+        faculties.put(faculty.getId(), faculty);
+        return faculty;
     }
 
     public Collection<Faculty> colorFaculty(String color) {
@@ -39,6 +41,10 @@ public class FacultyService {
             }
         }
         return facultiesByColor;
+    }
+
+    public Collection<Faculty> getAllFaculties() {
+        return faculties.values();
     }
 }
 
