@@ -46,6 +46,6 @@ class FacultyServiceTest {
         facultyService.addFaculty(griffindor);
         facultyService.addFaculty(huffelpuff);
         assertEquals(2, facultyService.getAllFaculties().size());
-        assertEquals(1, facultyService.colorFaculty("red").size());
+        assertEquals(1, facultyService.findByColor("red").size());
     }
 }

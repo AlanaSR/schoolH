@@ -56,7 +56,7 @@ public class FacultyController {
     public ResponseEntity<Collection<Faculty>> facultiesByColor
             (@RequestParam(required = false) String color) {
         if (color != null && !color.isBlank()) {
-            return ResponseEntity.ok(facultyService.colorFaculty(color));
+            return ResponseEntity.ok(facultyService.findByColor(color));
         }
         return ResponseEntity.ok(Collections.emptyList());
     }
