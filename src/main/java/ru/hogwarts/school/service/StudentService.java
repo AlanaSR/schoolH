@@ -10,7 +10,6 @@ import java.util.Collection;
 @Service
 public class StudentService {
 
-    @Autowired
     private final StudentRepository studentRepository;
 
     public StudentService(StudentRepository studentRepository) {
@@ -34,11 +33,16 @@ public class StudentService {
     }
 
 
-    public Collection<Student> studentsByAge(int age) {
-        return studentRepository.studentsByAge(age);
+    public Collection<Student> findAllByAge(Integer age) {
+        return studentRepository.findAllByAge(age);
     }
 
     public Collection<Student> getAllStudents() {
         return studentRepository.findAll();
     }
+
+    public Collection<Student> findByAgeBetween(Integer from, Integer to) {
+        return studentRepository.findByAgeBetween(from, to);
+    }
 }
+

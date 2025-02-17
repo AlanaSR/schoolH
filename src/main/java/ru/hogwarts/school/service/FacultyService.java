@@ -5,15 +5,11 @@ import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.repository.FacultyRepository;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Objects;
 
 @Service
 public class FacultyService {
 
-    @Autowired
     private final FacultyRepository facultyRepository;
 
     public FacultyService(FacultyRepository facultyRepository) {
@@ -36,12 +32,17 @@ public class FacultyService {
         return facultyRepository.save(faculty);
     }
 
-    public Collection<Faculty> findByColor(String color) {
-        return facultyRepository.findByColor(color);
-    }
-
     public Collection<Faculty> getAllFaculties() {
         return facultyRepository.findAll();
     }
+
+    public Collection<Faculty> findByName(String name) {
+        return facultyRepository.findByNameContainsIgnoreCase(name);
+    }
+
+    public Collection<Faculty> findByColor(String color) {
+        return facultyRepository.findByColorContainsIgnoreCase(color);
+    }
+
 }
 

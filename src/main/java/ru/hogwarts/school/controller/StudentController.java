@@ -14,7 +14,6 @@ import java.util.Collections;
 @RequestMapping("/student")
 public class StudentController {
 
-    @Autowired
     private final StudentService studentService;
 
     public StudentController(StudentService studentService) {
@@ -27,7 +26,7 @@ public class StudentController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Student> findStudent(@PathVariable long id) {
+    public ResponseEntity<Student> findStudent(@PathVariable Long id) {
         Student student = studentService.findStudent(id);
         if (student == null) {
             return ResponseEntity.notFound().build();
@@ -36,7 +35,7 @@ public class StudentController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteStudent(@PathVariable long id) {
+    public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
         studentService.deleteStudent(id);
         return ResponseEntity.ok().build();
     }
@@ -50,17 +49,19 @@ public class StudentController {
         return ResponseEntity.ok(foundStudent);
     }
 
-    @GetMapping()
-    public ResponseEntity<Collection<Student>> studentsByAge
-            (@RequestParam(required = false) int age) {
-        if (age > 0) {
-            return ResponseEntity.ok(studentService.studentsByAge(age));
-        }
-        return ResponseEntity.ok(Collections.emptyList());
+    @GetMapping("/age")
+    public Collection<Student> studentsByAge(@RequestParam Integer age) {
+        return studentService.findAllByAge(age);
     }
 
-    @GetMapping ("/all")
-    public Collection<Student> getAllStudents(){
+    @GetMapping("/all")
+    public Collection<Student> getAllStudents() {
         return studentService.getAllStudents();
+    }
+
+    @GetMapping("/between")
+    public Collection<Student> findByAgeBetween(@RequestParam Integer from,
+                                                @RequestParam Integer to) {
+        return studentService.findByAgeBetween(from, to);
     }
 }
