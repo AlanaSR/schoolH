@@ -1,11 +1,11 @@
 package ru.hogwarts.school.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Service
 public class StudentService {
@@ -20,8 +20,8 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
-    public Student findStudent(Long id) {
-        return studentRepository.getById(id);
+    public Optional<Student> findStudent(Long id) {
+        return studentRepository.findById(id);
     }
 
     public void deleteStudent(Long id) {
@@ -41,7 +41,7 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
-    public Collection<Student> findByAgeBetween(Integer from, Integer to) {
+    public Collection<Student> findAllByAgeBetween(Integer from, Integer to) {
         return studentRepository.findByAgeBetween(from, to);
     }
 }
