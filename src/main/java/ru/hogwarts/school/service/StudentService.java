@@ -21,7 +21,9 @@ public class StudentService {
     }
 
     public Optional<Student> findStudent(Long id) {
-        return studentRepository.findById(id);
+        return studentRepository.findAll().stream()
+                .filter(s->s.getId().equals(id))
+                .findFirst();
     }
 
     public void deleteStudent(Long id) {

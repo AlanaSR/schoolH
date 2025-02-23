@@ -24,7 +24,7 @@ public class Student {
         this.faculty = faculty;
     }
 
-    @ManyToOne (fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "faculty_id")
     @JsonBackReference
     private Faculty faculty;
@@ -76,7 +76,7 @@ public class Student {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Student student = (Student) o;
-        return id == student.id;
+        return Objects.equals(id, student.id);
     }
 
     @Override
@@ -90,6 +90,7 @@ public class Student {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", age=" + age +
+                ", faculty=" + faculty +
                 '}';
     }
 }
