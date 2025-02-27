@@ -20,12 +20,12 @@ public class Avatar {
     private byte[] data;
 
     @OneToOne
-    private Student student;
+    private Optional<Student> student;
 
     public Avatar() {
     }
 
-    public Avatar(Long id, String filePath, Long fileSize, String mediaType, byte[] data, Student student) {
+    public Avatar(Long id, String filePath, Long fileSize, String mediaType, byte[] data, Optional<Student> student) {
         this.id = id;
         this.filePath = filePath;
         this.fileSize = fileSize;
@@ -51,7 +51,7 @@ public class Avatar {
     }
 
     public int getFileSize() {
-        return fileSize;
+        return Math.toIntExact(fileSize);
     }
 
     public void setFileSize(Long fileSize) {
@@ -74,7 +74,7 @@ public class Avatar {
         this.data = data;
     }
 
-    public Student getStudent() {
+    public Optional<Student> getStudent() {
         return student;
     }
 
@@ -103,7 +103,7 @@ public class Avatar {
                 ", fileSize=" + fileSize +
                 ", mediaType='" + mediaType + '\'' +
                 ", data=" + Arrays.toString(data) +
-                ", student=" + student +
+                ", student=" + student.orElse(null) +
                 '}';
     }
 }

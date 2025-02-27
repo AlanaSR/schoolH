@@ -55,6 +55,10 @@ public class AvatarService {
         avatarRepository.save(avatar);
     }
 
+    public Avatar findAvatar(Long studentId) {
+        return avatarRepository.findByStudentId(studentId);
+    }
+
     private String getExtension(String fileName) {
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
