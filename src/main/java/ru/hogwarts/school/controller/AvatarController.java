@@ -19,12 +19,10 @@ import java.nio.file.Path;
 @RestController
 public class AvatarController {
     private final AvatarService avatarService;
-    private final Avatar avatar;
 
 
     public AvatarController(AvatarService avatarService, Avatar avatar) {
         this.avatarService = avatarService;
-        this.avatar = avatar;
     }
 
     @PostMapping(value = "/{id}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

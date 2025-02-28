@@ -8,9 +8,11 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Entity
+@Table(name = "avatar")
 public class Avatar {
+
     @Id
-    @GeneratedValue
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String filePath;
