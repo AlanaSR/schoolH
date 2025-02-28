@@ -52,7 +52,7 @@ public class FacultyController {
         return ResponseEntity.ok(foundFaculty);
     }
 
-    @GetMapping()
+    @GetMapping("/color")
     public ResponseEntity<Collection<Faculty>> findFaculty
             (@RequestParam(required = false) String color,
              @RequestParam(required = false) String name) {
