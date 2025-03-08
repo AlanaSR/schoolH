@@ -1,7 +1,6 @@
 package ru.hogwarts.school.service;
 
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.repository.FacultyRepository;
@@ -17,7 +16,6 @@ public class FacultyService {
         this.facultyRepository = facultyRepository;
     }
 
-    @Transactional
     public Faculty addFaculty(Faculty faculty) {
         return facultyRepository.save(faculty);
     }

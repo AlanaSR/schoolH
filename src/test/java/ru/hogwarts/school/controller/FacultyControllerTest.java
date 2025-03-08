@@ -9,6 +9,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
@@ -48,9 +49,9 @@ class FacultyControllerTest {
         faculty.setName("Griffindor");
         faculty.setColor("red");
 
-        Assertions.assertThat(this.restTemplate
-                        .postForObject("http://localhost:" + port + "/faculty", faculty, String.class))
-                .isNotNull();
+        ResponseEntity<Faculty> faculties = this.restTemplate
+                .postForEntity("http://localhost:" + port + "/faculty", faculty, Faculty.class);
+        Assertions.assertThat(faculties.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test
@@ -134,7 +135,7 @@ class FacultyControllerTest {
 
         assertThat(this.restTemplate
                 .getForObject("http://localhost:" + port + "/faculty" + faculty.getId() + "/facultyStudents",
-                String.class)).isNotNull();
+                        String.class)).isNotNull();
 
         facultyController.deleteFaculty(faculty.getId());
     }

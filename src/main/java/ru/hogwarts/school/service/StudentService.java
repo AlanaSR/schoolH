@@ -1,12 +1,14 @@
 package ru.hogwarts.school.service;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import ru.hogwarts.school.exception.NotFoundException;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.Collection;
-import java.util.Optional;
 
+@Primary
 @Service
 public class StudentService {
 
@@ -20,10 +22,8 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
-    public Optional<Student> findStudent(Long id) {
-        return studentRepository.findAll().stream()
-                .filter(s->s.getId().equals(id))
-                .findFirst();
+    public Student findStudent(Long id) {
+        return studentRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
     public void deleteStudent(Long id) {

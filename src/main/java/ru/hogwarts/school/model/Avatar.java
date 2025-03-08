@@ -19,16 +19,15 @@ public class Avatar {
     private Long fileSize;
     private String mediaType;
 
-    @Lob
     private byte[] data;
 
     @OneToOne
-    private Optional<Student> student;
+    private Student student;
 
     public Avatar() {
     }
 
-    public Avatar(Long id, String filePath, Long fileSize, String mediaType, byte[] data, Optional<Student> student) {
+    public Avatar(Long id, String filePath, Long fileSize, String mediaType, byte[] data, Student student) {
         this.id = id;
         this.filePath = filePath;
         this.fileSize = fileSize;
@@ -77,11 +76,11 @@ public class Avatar {
         this.data = data;
     }
 
-    public Optional<Student> getStudent() {
+    public Student getStudent() {
         return student;
     }
 
-    public void setStudent(Optional<Student> student) {
+    public void setStudent(Student student) {
         this.student = student;
     }
 
@@ -106,7 +105,7 @@ public class Avatar {
                 ", fileSize=" + fileSize +
                 ", mediaType='" + mediaType + '\'' +
                 ", data=" + Arrays.toString(data) +
-                ", student=" + student.orElse(null) +
+                ", student=" + student +
                 '}';
     }
 }

@@ -19,7 +19,6 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/student")
@@ -39,9 +38,9 @@ public class StudentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Student>> findStudent(@PathVariable Long id) {
-        Optional<Student> student = studentService.findStudent(id);
-        if (student.isEmpty()) {
+    public ResponseEntity<Student> findStudent(@PathVariable Long id) {
+        Student student = studentService.findStudent(id);
+        if (student == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(student);
@@ -80,7 +79,7 @@ public class StudentController {
 
     @GetMapping("/studentFaculty/{id}")
     public Faculty getStudentWithFaculty(@PathVariable Long id) {
-        return studentService.findStudent(id).get().getFaculty();
+        return studentService.findStudent(id).getFaculty();
     }
 
     @PostMapping(value = "/{id}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -93,7 +92,7 @@ public class StudentController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{id}/avatar/data")
+    @GetMapping("/{id}/avatar/preview")
     public ResponseEntity<byte[]> downloadAvatar(@PathVariable Long id) {
         Avatar avatar = avatarService.findAvatar(id);
         HttpHeaders headers = new HttpHeaders();
