@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,11 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
+
+import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -43,9 +49,8 @@ class FacultyControllerTest {
     }
 
     @Test
-    void addFaculty() {
+    void addFaculty() throws Exception {
         Faculty faculty = new Faculty();
-        faculty.setId(1L);
         faculty.setName("Griffindor");
         faculty.setColor("red");
 
@@ -56,9 +61,13 @@ class FacultyControllerTest {
 
     @Test
     void findFaculty() {
-        Assertions.assertThat(this.restTemplate
-                        .getForObject("http://localhost:" + port + "/faculty", String.class))
-                .isNotNull();
+        Faculty faculty = new Faculty();
+        faculty.setName("Griffindor");
+        faculty.setColor("red");
+
+        ResponseEntity<Faculty> faculties = this.restTemplate
+                .getForEntity("http://localhost:" + port + "/faculty", Faculty.class);
+        Assertions.assertThat(faculties.getBody()).isEqualTo(faculty);
     }
 
     @Test
@@ -86,18 +95,18 @@ class FacultyControllerTest {
         facultyRepository.save(faculty);
 
         Faculty faculty1 = new Faculty();
-        faculty1.setId(faculty1.getId());
+        faculty1.setId(faculty.getId());
         faculty1.setName("Griffindor");
         faculty1.setColor("red");
 
         ResponseEntity<Faculty> response = restTemplate.exchange("http://localhost:" + port + "/faculty",
                 HttpMethod.PUT, new HttpEntity<>(faculty1), Faculty.class);
 
-
         Assertions
                 .assertThat(response.getStatusCode().is2xxSuccessful());
 
-        facultyRepository.deleteById(faculty1.getId());
+        facultyController.deleteFaculty(faculty.getId());
+        facultyController.deleteFaculty(faculty1.getId());
     }
 
     @Test
@@ -109,16 +118,20 @@ class FacultyControllerTest {
 
         assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/faculty/color/" + faculty.getColor(),
                 String.class)).isNotNull();
-        assertThat(faculty.getName()).isEqualTo("red");
+        assertThat(faculty.getColor()).isEqualTo("red");
 
         facultyController.deleteFaculty(faculty.getId());
     }
 
     @Test
     void getAllFaculties() {
-        Assertions.assertThat(this.restTemplate
-                        .getForObject("http://localhost:" + port + "/faculty/all", String.class))
-                .isNotNull();
+
+        ResponseEntity<List<Faculty>> actual = restTemplate.exchange("http://localhost:" + port + "/faculty/all",
+                HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Faculty>>() {
+                });
+
+        Assertions.assertThat(actual.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test
@@ -133,9 +146,14 @@ class FacultyControllerTest {
         student.setAge(15);
         student.setFaculty(faculty);
 
-        assertThat(this.restTemplate
-                .getForObject("http://localhost:" + port + "/faculty" + faculty.getId() + "/facultyStudents",
-                        String.class)).isNotNull();
+
+        ResponseEntity<List<Faculty>> actual = restTemplate
+                .exchange("http://localhost:" + port + "/faculty/facultyStudents/" + faculty.getId(),
+                HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Faculty>>() {
+                });
+
+        Assertions.assertThat(actual.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         facultyController.deleteFaculty(faculty.getId());
     }
