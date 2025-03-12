@@ -56,7 +56,9 @@ class FacultyControllerTest {
 
         ResponseEntity<Faculty> faculties = this.restTemplate
                 .postForEntity("http://localhost:" + port + "/faculty", faculty, Faculty.class);
+
         Assertions.assertThat(faculties.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(faculties.getBody().getName()).isEqualTo(faculty.getName());
     }
 
     @Test
