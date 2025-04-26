@@ -1,6 +1,7 @@
 package ru.hogwarts.school.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Arrays;
@@ -19,6 +20,7 @@ public class Avatar {
     private Long fileSize;
     private String mediaType;
 
+    @JsonIgnore
     private byte[] data;
 
     @OneToOne
