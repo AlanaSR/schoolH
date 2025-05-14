@@ -111,4 +111,17 @@ public class StudentController {
         List<String> namesA = studentService.getAllStudentNameFirstA();
         return ResponseEntity.ok(namesA);
     }
+
+    @GetMapping("/print-parallel")
+    public ResponseEntity<List<Student>> studentsPrintParallel() {
+        List<Student> students = studentService.studentsPrintParallel();
+        return ResponseEntity.ok(students);
+    }
+
+    @GetMapping("/print-synchronized")
+    public ResponseEntity<List<Student>> studentsPrintParallelSync() {
+        List<Student> students = studentService.studentsPrintParallelSync();
+        return ResponseEntity.ok(students);
+    }
+
 }

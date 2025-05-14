@@ -85,14 +85,41 @@ public class StudentService {
     }
 
     public Integer averageAgeStudentsStream() {
-       Integer age = studentRepository.findAll().stream()
+        Integer age = (int) studentRepository.findAll().stream()
                 .map(Student::getAge)
-                .mapToInt(a -> a)
-                .map(a-> {
-                    System.out.println("Average age of students"+a);
-                    return a;
-                }).sum();
-       return age;
+                .mapToInt(a -> a).average()
+//                .map(a -> {
+//                    System.out.println("Average age of students" + a);
+//                    return a;
+//                })
+//                .sum();
+                .getAsDouble();
+        return age;
+    }
+
+    public List<Student> studentsPrintParallel() {
+        logger.info("Was invoked method for printing names with parallel method");
+        List<Student> students = studentRepository.findAll();
+
+        System.out.println("Первый студент " + students.get(0).getName());
+        System.out.println("Второй студент " + students.get(1).getName());
+
+        new Thread(() -> {
+            System.out.println("Третий студент " + students.get(2).getName());
+            System.out.println("Четвертый студент " + students.get(3).getName());
+        }).start();
+
+        new Thread(() -> {
+            System.out.println("Пятый студент " + students.get(4).getName());
+            System.out.println("Шестой студент " + students.get(5).getName());
+        }).start();
+
+        return students;
+    }
+
+    public synchronized List<Student> studentsPrintParallelSync() {
+           List<Student> sync = studentsPrintParallel();
+           return sync;
     }
 }
 
