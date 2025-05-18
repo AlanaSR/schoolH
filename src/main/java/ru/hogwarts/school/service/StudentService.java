@@ -117,9 +117,28 @@ public class StudentService {
         return students;
     }
 
-    public synchronized List<Student> studentsPrintParallelSync() {
-           List<Student> sync = studentsPrintParallel();
-           return sync;
+    public List<Student> studentsPrintParallelSync() {
+        logger.info("Was invoked method for printing synchronized names with parallel method");
+        List<Student> students = studentRepository.findAll();
+
+        studentsPrintSync(students.get(0));
+        studentsPrintSync(students.get(1));
+
+        new Thread(() -> {
+            studentsPrintSync(students.get(2));
+            studentsPrintSync(students.get(3));
+        }).start();
+
+        new Thread(() -> {
+            studentsPrintSync(students.get(4));
+            studentsPrintSync(students.get(5));
+        }).start();
+
+        return students;
+    }
+
+    public synchronized void studentsPrintSync(Student student) {
+        System.out.println(student.getId() + " студент " + student.getName());
     }
 }
 
