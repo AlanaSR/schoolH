@@ -73,4 +73,14 @@ public class FacultyController {
     public Collection<Student> getFacultyWithStudents(@PathVariable Long id) {
         return facultyService.findFaculty(id).getStudents();
     }
+
+    @GetMapping("/sum")
+    public Integer sum() {
+        return facultyService.sum();
+    }
+
+    @GetMapping("/logest")
+    public String longestNameOfFaculty() {
+        return facultyService.longestNameOfFaculty();
+    }
 }

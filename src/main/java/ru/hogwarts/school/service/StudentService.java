@@ -10,6 +10,7 @@ import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Primary
 @Service
@@ -72,6 +73,72 @@ public class StudentService {
     public List<Student> getFiveLastStudents() {
         logger.info("Was invoked method for output five last students");
         return studentRepository.getFiveLastStudents();
+    }
+
+    public List<String> getAllStudentNameFirstA() {
+        return studentRepository.findAll().stream().filter(student -> student.getName().startsWith("A"))
+                .sorted()
+                .map(Student::getName)
+                .map(String::toUpperCase)
+                .collect(Collectors.toList());
+
+    }
+
+    public Integer averageAgeStudentsStream() {
+        Integer age = (int) studentRepository.findAll().stream()
+                .map(Student::getAge)
+                .mapToInt(a -> a).average()
+//                .map(a -> {
+//                    System.out.println("Average age of students" + a);
+//                    return a;
+//                })
+//                .sum();
+                .getAsDouble();
+        return age;
+    }
+
+    public List<Student> studentsPrintParallel() {
+        logger.info("Was invoked method for printing names with parallel method");
+        List<Student> students = studentRepository.findAll();
+
+        System.out.println("Первый студент " + students.get(0).getName());
+        System.out.println("Второй студент " + students.get(1).getName());
+
+        new Thread(() -> {
+            System.out.println("Третий студент " + students.get(2).getName());
+            System.out.println("Четвертый студент " + students.get(3).getName());
+        }).start();
+
+        new Thread(() -> {
+            System.out.println("Пятый студент " + students.get(4).getName());
+            System.out.println("Шестой студент " + students.get(5).getName());
+        }).start();
+
+        return students;
+    }
+
+    public List<Student> studentsPrintParallelSync() {
+        logger.info("Was invoked method for printing synchronized names with parallel method");
+        List<Student> students = studentRepository.findAll();
+
+        studentsPrintSync(students.get(0));
+        studentsPrintSync(students.get(1));
+
+        new Thread(() -> {
+            studentsPrintSync(students.get(2));
+            studentsPrintSync(students.get(3));
+        }).start();
+
+        new Thread(() -> {
+            studentsPrintSync(students.get(4));
+            studentsPrintSync(students.get(5));
+        }).start();
+
+        return students;
+    }
+
+    public synchronized void studentsPrintSync(Student student) {
+        System.out.println(student.getId() + " студент " + student.getName());
     }
 }
 

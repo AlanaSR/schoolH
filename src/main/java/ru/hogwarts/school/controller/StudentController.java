@@ -99,4 +99,29 @@ public class StudentController {
     public List<Student> getFiveLastStudents() {
         return studentService.getFiveLastStudents();
     }
+
+    @GetMapping("/average")
+    public ResponseEntity<Integer> averageAgeOfStudents() {
+        Integer average = studentService.averageAgeStudentsStream();
+        return ResponseEntity.ok(average);
+    }
+
+    @GetMapping("/names")
+    public ResponseEntity<List<String>> studentsNamesFirstA() {
+        List<String> namesA = studentService.getAllStudentNameFirstA();
+        return ResponseEntity.ok(namesA);
+    }
+
+    @GetMapping("/print-parallel")
+    public ResponseEntity<List<Student>> studentsPrintParallel() {
+        List<Student> students = studentService.studentsPrintParallel();
+        return ResponseEntity.ok(students);
+    }
+
+    @GetMapping("/print-synchronized")
+    public ResponseEntity<List<Student>> studentsPrintParallelSync() {
+        List<Student> students = studentService.studentsPrintParallelSync();
+        return ResponseEntity.ok(students);
+    }
+
 }
